@@ -59,9 +59,9 @@
         <div class="u-clearfix u-sheet u-sheet-1">
           <a href="/AddRoom" data-page-id="688006467" class="u-black u-border-2 u-border-black u-btn u-btn-round u-button-style u-hover-palette-3-light-1 u-radius-50 u-text-palette-3-dark-2 u-btn-1">&nbsp;<span class="u-file-icon u-icon u-text-white u-icon-1"><img src="images/8.png" alt=""></span>
           </a>
-          
-          <a href="/Devices" data-page-id="87085246" class="u-border-2 u-border-black u-btn u-button-style u-hover-black u-palette-4-base u-text-hover-white u-btn-2"></a>
-         
+          {% for room in user.rooms %}
+          <a href="/Devices" data-page-id="87085246" class="u-border-2 u-border-black u-btn u-button-style u-hover-black u-palette-4-base u-text-hover-white u-btn-2"> {{user.name}}</a>
+          {% endfor %}
         </div>
       </section>
     

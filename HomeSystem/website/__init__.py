@@ -4,7 +4,7 @@ from os import path
 from flask_login import LoginManager
 
 db = SQLAlchemy()
-DB_NAME = "smarthome.sql"
+DB_NAME = "smarthome.db"
 
 
 def create_app():
@@ -27,9 +27,13 @@ def create_app():
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
+
+
+
     @login_manager.user_loader
     def load_user(id):
         return User.query.get(int(id))
+        
 
     return app
 

@@ -70,13 +70,13 @@
           <div class="u-repeater u-repeater-1">
             <div class="u-container-style u-list-item u-repeater-item">
               <div class="u-container-layout u-similar-container u-container-layout-1"><span class="u-file-icon u-icon u-icon-1"><img src="static/styles/images/107818.png" alt=""></span>
-                <p class="u-text u-text-1">21 C  {{temp}}</p>
+                <p class="u-text u-text-1">{{temp}} C</p>
                 <p class="u-text u-text-2">Temprature</p>
               </div>
             </div>
             <div class="u-container-style u-list-item u-repeater-item">
               <div class="u-container-layout u-similar-container u-container-layout-2"><span class="u-file-icon u-icon u-icon-2"><img src="static/styles/images/219816.png" alt=""></span>
-                <p class="u-text u-text-3">35 % {{humid}}</p>
+                <p class="u-text u-text-3"> {{humid}} %</p>
                 <p class="u-text u-text-4">Humidity </p>
               </div>
             </div>
@@ -85,6 +85,12 @@
                 <p class="u-text u-text-5">Locked</p>
                 <p class="u-text u-text-6">Door Lock</p>
               </div>
+              <form method="POST">
+                <input type="submit" value="Lock" name="lock" id ="lock">
+            </form>
+            <form method="POST">
+              <input type="submit" value="Unlock" name="unlock" id ="unlock">
+          </form>
             </div>
           </div>
         </div>
