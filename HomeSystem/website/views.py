@@ -16,14 +16,14 @@ views = Blueprint('views', __name__)
 def home():
     return render_template("Home.html", user=current_user)
 
-@views.route('/Rooms', methods=['GET', 'POST'])
+@views.route('/Rooms', methods=['GET'])
 @login_required
 def rooms():
     
-    def addroom(self):
-        new_room = Room(name ="Living Room", user_id=current_user.id)
-        db.session.add(new_room)
-        db.session.commit()
+    
+    new_room = Room(name ="Living Room", temp=True, humid=True , lock = True, user_id=current_user.id)
+    db.session.add(new_room)
+    db.session.commit()
     return render_template("My-rooms.html", user=current_user)
 
 @views.route('/Devices', methods=['GET', 'POST'])
@@ -41,6 +41,8 @@ def devices():
 @views.route('/AddRoom', methods=['GET', 'POST'])
 @login_required
 def addroom():
+
+    
     if request.method == 'POST':
         room = request.form.get('room')
         temp = request.form.get('temp')
