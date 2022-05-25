@@ -52,5 +52,6 @@ def addroom():
         new_room = Room("Living Room", user_id=current_user.id)
         db.session.add(new_room)
         db.session.commit()
+
        
     return render_template("addroom.html", user=current_user )
