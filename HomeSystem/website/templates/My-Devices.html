@@ -82,13 +82,18 @@
             </div>
             <div class="u-container-style u-list-item u-repeater-item">
               <div class="u-container-layout u-similar-container u-container-layout-3"><span class="u-file-icon u-icon u-icon-3"><img src="static/styles/images/63440.png" alt=""></span>
-                <p class="u-text u-text-5">Locked</p>
+                <p class="u-text u-text-5">{{str}}</p>
                 <p class="u-text u-text-6">Door Lock</p>
               </div>
             </div>
           </div>
         </div>
-        <a href="" class="u-black u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-radius-6 u-btn-1">LOCK</a>
+        <form method ="POST">
+        <input type="submit" name="submit_button" value="Lock" class="u-black u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-radius-6 u-btn-1">
+        <br>
+        <input type="submit" name="submit_button" value="Unlock" class="u-black u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-radius-6 u-btn-1">
+      </form>
+      <!-- <a name ="doorlock" id="doorlock" class="u-black u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-radius-6 u-btn-1">{{str}}</a> -->
       </div>
     </section>
     

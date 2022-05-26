@@ -8,6 +8,7 @@ import json
 
 
 
+
 views = Blueprint('views', __name__)
 
 
@@ -28,15 +29,31 @@ def rooms():
 
 @views.route('/Devices', methods=['GET', 'POST'])
 @login_required
+
 def devices():
+    from gpiozero import Servo
+    from time import sleep
+    myGPIO = 25
+    myCorrection = 0.45
+    maxPW = (2.0 + myCorrection) / 1000
+    minPW = (1.0 - myCorrection) / 1000
+    servo = Servo(myGPIO, min_pulse_width = minPW, max_pulse_width=maxPW)
 
+
+    str= "Locked"
     if request.method == 'POST':
-        lock = request.form.get('lock')
-        unlock = request.form.get('unlock')
-
-    
+        if request.form['submit_button'] == 'Lock':
+            str= "Locked"
+            servo.min()
+            servo.min()
+            sleep(1)
+        elif request.form['submit_button'] == 'Unlock':
+            str="Unlocked"
+            servo.max()
+            sleep(1)
+            
     humidity, temperature = 35, 21 #Adafruit_DHT.read_retry(11,4)
-    return render_template("My-Devices.html", user=current_user, humid = humidity, temp =temperature )
+    return render_template("My-Devices.html", user=current_user, humid = humidity, temp =temperature, str=str )
 
 @views.route('/AddRoom', methods=['GET', 'POST'])
 @login_required
