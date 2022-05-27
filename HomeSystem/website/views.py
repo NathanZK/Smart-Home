@@ -35,8 +35,9 @@ def devices():
     # minPW = (1.0 - myCorrection) / 1000
     # servo = Servo(myGPIO, min_pulse_width = minPW, max_pulse_width=maxPW)
 
-
+    
     str= "Locked"
+    doorstatus =""
     if request.method == 'POST':
         if request.form['submit_button'] == 'Lock':
             str= "Locked"
@@ -48,8 +49,15 @@ def devices():
             # servo.max()
             # sleep(1)
             
+    if str =="Locked":
+        doorstatus = "Unlock"
+    elif str=="Unlocked":
+        doorstatus ="Lock"
+
+
+
     humidity, temperature = 35, 21 #Adafruit_DHT.read_retry(11,4)
-    return render_template("My-Devices.html", user=current_user, humid = humidity, temp =temperature, str=str )
+    return render_template("My-Devices.html", user=current_user, humid = humidity, temp =temperature, str=str, doorstatus = doorstatus )
 
 @views.route('/AddRoom', methods=['GET', 'POST'])
 @login_required
