@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, flash, jsonify
+import flask
 from flask_login import login_required, current_user
 from .models import Room
 from . import db
@@ -68,15 +69,27 @@ def addroom():
 
     if request.method == 'POST':
         room = request.form['room']
-        temp = request.form['temp']
-        humid = request.form['humid']
-        lock = request.form['lock']
+       
+        temp=False
+        humid=False
+        lock=False
+        if  request.form.get('temp'):
+            temp=True
+    
+        if  request.form.get('humid'):
+            humid=True
+       
+        if  request.form.get('lock'):
+            lock=True
+      
+       
         
-        new_room = Room(name =room, user_id=current_user.id)
+        new_room = Room(name =room, temp= temp, humid =humid, lock =lock, user_id=current_user.id)
         db.session.add(new_room)
         db.session.commit()
         
-        return render_template("My-rooms.html", user=current_user)
+        return flask.redirect("/Rooms")
+        
 
         
        
