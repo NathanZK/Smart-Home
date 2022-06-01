@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, flash, jsonify
 import flask
+from flask import session, url_for
 from flask_login import login_required, current_user
 from .models import Room
 from . import db
@@ -21,20 +22,20 @@ views = Blueprint('views', __name__)
 def home():
     return render_template("Home.html", user=current_user)
 
-@views.route('/Rooms', methods=['GET','POST'])
+@views.route('/Rooms/', methods=['GET','POST'])
 @login_required
 def rooms():
     if request.method == 'GET':
         return render_template("My-rooms.html", user=current_user)
     if request.method == 'POST':
         name= request.form["room_button"]
-        return flask.redirect("/Devices", Rname=name)
+        return flask.redirect(url_for('.devices', name=name))
     
 
-@views.route('/Devices', methods=['GET', 'POST'])
+@views.route('/Devices/<name>', methods=['GET', 'POST'])
 @login_required
 
-def devices():
+def devices(name):
     # from gpiozero import Servo
     # from time import sleep
     # myGPIO = 25
@@ -84,7 +85,7 @@ def devices():
 
 
     humidity, temperature = 35, 21 #Adafruit_DHT.read_retry(11,4)
-    return render_template("My-Devices.html", user=current_user, humid = humidity, temp =temperature, str=str, doorstatus = doorstatus )
+    return render_template("My-Devices.html", user=current_user, humid = humidity, temp =temperature, str=str, doorstatus = doorstatus, name=name )
 
 @views.route('/AddRoom', methods=['GET', 'POST'])
 @login_required
@@ -99,6 +100,7 @@ def addroom():
         temp=False
         humid=False
         lock=False
+        led=False
         if  request.form.get('temp'):
             temp=True
     
@@ -107,9 +109,11 @@ def addroom():
        
         if  request.form.get('lock'):
             lock=True
-      
+       
+        if  request.form.get('led'):
+            led=True
     
-        new_room = Room(name =room, temp= temp, humid =humid, lock =lock, user_id=current_user.id)
+        new_room = Room(name =room, temp= temp, humid =humid, lock =lock, lockstatus="Locked", led =led, user_id=current_user.id)
         db.session.add(new_room)
         db.session.commit()
         

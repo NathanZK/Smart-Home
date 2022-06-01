@@ -10,10 +10,12 @@ class Room(db.Model):
     temp = db.Column(db.Boolean)
     humid = db.Column(db.Boolean)
     lock = db.Column(db.Boolean)
+    lockstatus = db.Column(db.String(150))
+    led = db.Column(db.Boolean)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-       return f"Room('{self.name}','{self.temp}', '{self.humid}','{self.lock}')"
+       return f"Room('{self.name}','{self.temp}', '{self.humid}','{self.lock}','{self.lockstatus}','{self.led}' )"
 
 
 class User(db.Model, UserMixin):
