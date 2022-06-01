@@ -61,8 +61,12 @@
           </a>
           <a href="/Devices" data-page-id="87085246" class="u-border-2 u-border-black u-btn u-button-style u-hover-black u-palette-4-base u-text-hover-white u-btn-2"> Living Room</a>
           {% for room in user.rooms %}
-          <a href="/Devices" data-page-id="87085246" class="u-border-2 u-border-black u-btn u-button-style u-hover-black u-palette-4-base u-text-hover-white u-btn-2"> {{room.name}}</a>
+          <form   method="POST">
+          <input type="submit" name="room_button" value="{{room.name}}" class="u-border-2 u-border-black u-btn u-button-style u-hover-black u-palette-4-base u-text-hover-white u-btn-2">
+        </form>
           {% endfor %}
+         
+       
         </div>
       </section>
     

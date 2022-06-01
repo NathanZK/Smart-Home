@@ -6,6 +6,9 @@ from . import db
 import json
 
 #import Adafruit_DHT
+#import Rpi.GPIO as GPIO
+
+
 
 
 
@@ -18,11 +21,15 @@ views = Blueprint('views', __name__)
 def home():
     return render_template("Home.html", user=current_user)
 
-@views.route('/Rooms', methods=['GET'])
+@views.route('/Rooms', methods=['GET','POST'])
 @login_required
 def rooms():
+    if request.method == 'GET':
+        return render_template("My-rooms.html", user=current_user)
+    if request.method == 'POST':
+        name= request.form["room_button"]
+        return flask.redirect("/Devices", Rname=name)
     
-    return render_template("My-rooms.html", user=current_user)
 
 @views.route('/Devices', methods=['GET', 'POST'])
 @login_required
@@ -55,6 +62,25 @@ def devices():
     elif str=="Unlocked":
         doorstatus ="Lock"
 
+    # GPIO.setmoe(GPIO.BOARD)
+
+    # GPIO.setup(11,GPIO.OUT)
+    # GPIO.output(11,1)
+    # GPIO.setup(13,GPIO.OUT)
+    # GPIO.output(13,1)
+    # GPIO.setup(15,GPIO.OUT)
+    # GPIO.output(15,1)
+
+    # try:
+    #     while(True):
+    #         request = input ("RGB-->")
+    #         if (len(request)==3):
+    #             GPIO.output(11,int(request[0]))
+    #             GPIO.output(13,int(request[1]))
+    #             GPIO.output(15,int(request[2]))
+
+    # except KeyboardInterrupt:
+    #     GPIO.cleanup()
 
 
     humidity, temperature = 35, 21 #Adafruit_DHT.read_retry(11,4)
@@ -82,8 +108,7 @@ def addroom():
         if  request.form.get('lock'):
             lock=True
       
-       
-        
+    
         new_room = Room(name =room, temp= temp, humid =humid, lock =lock, user_id=current_user.id)
         db.session.add(new_room)
         db.session.commit()

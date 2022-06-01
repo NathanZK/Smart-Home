@@ -7,9 +7,9 @@ class Room(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
-    temp = db.Column(db.Boolean, default=False)
-    humid = db.Column(db.Boolean, default=False)
-    lock = db.Column(db.Boolean, default=False)
+    temp = db.Column(db.Boolean)
+    humid = db.Column(db.Boolean)
+    lock = db.Column(db.Boolean)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
