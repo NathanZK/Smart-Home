@@ -29,6 +29,7 @@ def rooms():
         return render_template("My-rooms.html", user=current_user)
     if request.method == 'POST':
         name= request.form["room_button"]
+        
         return flask.redirect(url_for('.devices', name=name))
     
 
@@ -45,24 +46,7 @@ def devices(name):
     # servo = Servo(myGPIO, min_pulse_width = minPW, max_pulse_width=maxPW)
 
     
-    str= "Locked"
-    doorstatus =""
-    if request.method == 'POST':
-        if request.form['submit_button'] == 'Lock':
-            str= "Locked"
-            # servo.min()
-            # servo.min()
-            # sleep(1)
-        elif request.form['submit_button'] == 'Unlock':
-            str="Unlocked"
-            # servo.max()
-            # sleep(1)
-            
-    if str =="Locked":
-        doorstatus = "Unlock"
-    elif str=="Unlocked":
-        doorstatus ="Lock"
-
+    
     # GPIO.setmoe(GPIO.BOARD)
 
     # GPIO.setup(11,GPIO.OUT)
@@ -83,9 +67,47 @@ def devices(name):
     # except KeyboardInterrupt:
     #     GPIO.cleanup()
 
+    room= Room.query.filter_by(name=name).first()
+    str = room.lockstatus
+    
+    doorstatus =""
+    if request.method == 'POST':
+        # if request.form['submit_button'] == 'Lock':
+        #     room.lockstatus= "Locked"
+        #     str = room.lockstatus
+        #     # servo.min()
+        #     # servo.min()
+        #     # sleep(1)
+        # elif request.form['submit_button'] == 'Unlock':
+        #     room.lockstatus="Unlocked"
+        #     str = room.lockstatus
+        #     # servo.max()
+        #     # sleep(1)
+
+
+        hex= request.form.get('rgb').lstrip('#')
+        rgbValue=  tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
+        red= rgbValue[0]
+        green=rgbValue[1]
+        blue=rgbValue[2]
+        
+        
+       
+    db.session.commit()       
+    if str =="Locked":
+        doorstatus = "Unlock"
+    elif str=="Unlocked":
+        doorstatus ="Lock"
+    
+
+    
+
+        
+
+
 
     humidity, temperature = 35, 21 #Adafruit_DHT.read_retry(11,4)
-    return render_template("My-Devices.html", user=current_user, humid = humidity, temp =temperature, str=str, doorstatus = doorstatus, name=name )
+    return render_template("My-Devices.html", user=current_user, humid = humidity, temp =temperature, str=str, doorstatus = doorstatus, room=room )
 
 @views.route('/AddRoom', methods=['GET', 'POST'])
 @login_required
