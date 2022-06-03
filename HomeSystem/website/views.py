@@ -7,7 +7,7 @@ from . import db
 import json
 
 #import Adafruit_DHT
-#import Rpi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 
 
 
@@ -46,51 +46,56 @@ def devices(name):
     # servo = Servo(myGPIO, min_pulse_width = minPW, max_pulse_width=maxPW)
 
     
-    
-    # GPIO.setmoe(GPIO.BOARD)
-
-    # GPIO.setup(11,GPIO.OUT)
-    # GPIO.output(11,1)
-    # GPIO.setup(13,GPIO.OUT)
-    # GPIO.output(13,1)
-    # GPIO.setup(15,GPIO.OUT)
-    # GPIO.output(15,1)
-
-    # try:
-    #     while(True):
-    #         request = input ("RGB-->")
-    #         if (len(request)==3):
-    #             GPIO.output(11,int(request[0]))
-    #             GPIO.output(13,int(request[1]))
-    #             GPIO.output(15,int(request[2]))
-
-    # except KeyboardInterrupt:
-    #     GPIO.cleanup()
 
     room= Room.query.filter_by(name=name).first()
     str = room.lockstatus
     
     doorstatus =""
     if request.method == 'POST':
-        # if request.form['submit_button'] == 'Lock':
-        #     room.lockstatus= "Locked"
-        #     str = room.lockstatus
-        #     # servo.min()
-        #     # servo.min()
-        #     # sleep(1)
-        # elif request.form['submit_button'] == 'Unlock':
-        #     room.lockstatus="Unlocked"
-        #     str = room.lockstatus
-        #     # servo.max()
-        #     # sleep(1)
+        if request.form['submit_button'] == 'Lock':
+            room.lockstatus= "Locked"
+            str = room.lockstatus
+            # servo.min()
+            # servo.min()
+            # sleep(1)
+        elif request.form['submit_button'] == 'Unlock':
+            room.lockstatus="Unlocked"
+            str = room.lockstatus
+            # servo.max()
+            # sleep(1)
+   
 
+        # GPIO.setmode(GPIO.BOARD)
 
-        hex= request.form.get('rgb').lstrip('#')
-        rgbValue=  tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
-        red= rgbValue[0]
-        green=rgbValue[1]
-        blue=rgbValue[2]
+        # GPIO.setup(11,GPIO.OUT)
+        # GPIO.output(11,1)
+        # GPIO.setup(13,GPIO.OUT)
+        # GPIO.output(13,1)
+        # GPIO.setup(15,GPIO.OUT)
+        # GPIO.output(15,1)
+
+        # hex = request.form.get('rgb').lstrip('#')
+        # rgbValue =  tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
         
+        # if rgbValue[0] <125:
+        #     red = 0
+        # else:
+        #     red = 1
+ 
+        # if rgbValue[1] <125:
+        #     green = 0
+        # else:
+        #     green = 1
+
+        # if rgbValue[2] <125:
+        #     blue = 0
+        # else:
+        #     blue = 1
+
+              
+        # GPIO.output(11,int(red))
+        # GPIO.output(13,int(green))
+        # GPIO.output(15,int(blue))
         
        
     db.session.commit()       
@@ -99,13 +104,6 @@ def devices(name):
     elif str=="Unlocked":
         doorstatus ="Lock"
     
-
-    
-
-        
-
-
-
     humidity, temperature = 35, 21 #Adafruit_DHT.read_retry(11,4)
     return render_template("My-Devices.html", user=current_user, humid = humidity, temp =temperature, str=str, doorstatus = doorstatus, room=room )
 

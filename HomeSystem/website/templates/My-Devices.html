@@ -108,10 +108,11 @@
         {% if room.lock==True %}
         <form method ="POST">
         <input type="submit" name="submit_button" value="{{doorstatus}}" class="u-black u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-radius-6 u-btn-1">
+        <input type="submit" name="submit_button1" value="Off" class="u-black u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-radius-6 u-btn-1">
       </form>
       {%endif%}
       {% if room.led==True %}
-      <a href="" class="u-black u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-radius-6 u-btn-2">OFF</a>
+      <!-- <a href="" class="u-black u-border-none u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-radius-6 u-btn-2">OFF</a> -->
       <div class="u-form u-form-1">
         <form action="#" method="POST" class="u-clearfix u-form-spacing-15 u-form-vertical u-inner-form" style="padding: 15px;" source="email" name="form">
           <div class="u-form-group u-label-none u-form-group-1">
