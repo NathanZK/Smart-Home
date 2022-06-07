@@ -7,10 +7,16 @@ from . import db
 import json
 
 #import Adafruit_DHT
-# import RPi.GPIO as GPIO
+# import Rpi.GPIO as GPIO
 
+from flask import Flask, render_template, Response
+import cv2
 
-
+camera = cv2.VideoCapture(0)
+'''
+for ip camera use - rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' 
+for local webcam use cv2.VideoCapture(0)
+'''
 
 
 
@@ -46,6 +52,26 @@ def devices(name):
     # servo = Servo(myGPIO, min_pulse_width = minPW, max_pulse_width=maxPW)
 
     
+    
+    # GPIO.setmoe(GPIO.BOARD)
+
+    # GPIO.setup(11,GPIO.OUT)
+    # GPIO.output(11,1)
+    # GPIO.setup(13,GPIO.OUT)
+    # GPIO.output(13,1)
+    # GPIO.setup(15,GPIO.OUT)
+    # GPIO.output(15,1)
+
+    # try:
+    #     while(True):
+    #         request = input ("RGB-->")
+    #         if (len(request)==3):
+    #             GPIO.output(11,int(request[0]))
+    #             GPIO.output(13,int(request[1]))
+    #             GPIO.output(15,int(request[2]))
+
+    # except KeyboardInterrupt:
+    #     GPIO.cleanup()
 
     room= Room.query.filter_by(name=name).first()
     str = room.lockstatus
@@ -63,39 +89,33 @@ def devices(name):
             str = room.lockstatus
             # servo.max()
             # sleep(1)
-   
 
-        # GPIO.setmode(GPIO.BOARD)
 
-        # GPIO.setup(11,GPIO.OUT)
-        # GPIO.output(11,1)
-        # GPIO.setup(13,GPIO.OUT)
-        # GPIO.output(13,1)
-        # GPIO.setup(15,GPIO.OUT)
-        # GPIO.output(15,1)
-
-        # hex = request.form.get('rgb').lstrip('#')
-        # rgbValue =  tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
+        # hex= request.form.get('rgb').lstrip('#')
+        # rgbValue=  tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
         
         # if rgbValue[0] <125:
-        #     red = 0
+        #     red =0
         # else:
-        #     red = 1
+        #     red=1
  
         # if rgbValue[1] <125:
-        #     green = 0
+        #     green =0
         # else:
-        #     green = 1
+        #     green=1
 
         # if rgbValue[2] <125:
-        #     blue = 0
+        #     blue =0
         # else:
-        #     blue = 1
+        #     blue=1
 
-              
+        # red= rgbValue[0]
+        # green=rgbValue[1]
+        # blue=rgbValue[2]
+        
         # GPIO.output(11,int(red))
-        # GPIO.output(13,int(green))
-        # GPIO.output(15,int(blue))
+        # GPIO.output(13,int(blue))
+        # GPIO.output(15,int(green))
         
        
     db.session.commit()       
@@ -106,6 +126,20 @@ def devices(name):
     
     humidity, temperature = 35, 21 #Adafruit_DHT.read_retry(11,4)
     return render_template("My-Devices.html", user=current_user, humid = humidity, temp =temperature, str=str, doorstatus = doorstatus, room=room )
+
+def gen_frames():  
+    while True:
+        success, frame = camera.read()  # read the camera frame
+        if not success:
+            break
+        else:
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
+
+
+
 
 @views.route('/AddRoom', methods=['GET', 'POST'])
 @login_required
@@ -140,6 +174,7 @@ def addroom():
         return flask.redirect("/Rooms")
         
 
-        
-       
+@views.route('/video_feed')
+def video_feed():
+    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
     
