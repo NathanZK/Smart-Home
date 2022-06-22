@@ -1,4 +1,4 @@
-# Flask Web App Tutorial
+#Smart Home System
 
 ## Setup & Installtion
 
